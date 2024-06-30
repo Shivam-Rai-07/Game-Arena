@@ -22,18 +22,16 @@ public class Arena {
         return this.players.get(num-1);
     }
 
-    public void displayPlayers() {
-        for(int i=0; i<this.players.size(); i++)
-            System.out.printf("Player %d: , Name: %s, Health: %d\n", i+1, players.get(i).getName(), players.get(i).getHealth());
-    }
-
-    public int getNumberOfPlayers() {
-        return this.players.size();
+    public void displayAlivePlayers() {
+        for(int i=0; i<this.players.size(); i++) {
+            if(players.get(i).isAlive())
+                System.out.printf("Player %d: , Name: %s, Health: %d\n", i+1, players.get(i).getName(), players.get(i).getHealth());
+        }
     }
 
     public int getTotalNumberOfAlivePlayers() {
         int alivePlayersCount = 0;
-        for(Player player: players) {
+        for(Player player: this.players) {
             if (player.isAlive())
                 alivePlayersCount++;
         }

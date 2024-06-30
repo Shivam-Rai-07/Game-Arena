@@ -7,11 +7,12 @@ import Game.interfaces.GameInterface;
 import java.util.Scanner;
 
 public class GameImpl implements GameInterface {
-    public static void organizeGame() {
+    public void organizeGame() {
         GameImpl game = new GameImpl();
         Arena arena = game.createArena();
         game.addPlayers(arena);
-        game.startMatch(arena);
+        game.startTournament(arena);
+        game.getWinner(arena);
     }
 
     public Arena createArena() {
@@ -19,64 +20,74 @@ public class GameImpl implements GameInterface {
     }
 
     public void addPlayers(Arena arena) {
-        Scanner scn = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the total number of participants: ");
-        int num = scn.nextInt();
+        int num = scanner.nextInt();
 
-        if (num <= 1)
-            System.out.println("Not enough players to start the tournament:"); // Need to implement
+        while(num <= 1) {
+            System.out.println("\nNot enough players to start the tournament");
+            System.out.println("\nPlease re-enter number of players:");;
+            num = scanner.nextInt();
+        }
 
         for(int i=1; i<=num; i++) {
-            System.out.printf("Please Enter Details of Player %d", i);
+            System.out.printf("\nPlease Enter Details of Player %d\n", i);
             arena.addPlayer(createPlayer());
         }
     }
 
+
     public Player createPlayer() {
-        Scanner scn = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Please Enter Name: ");
-        String name = scn.nextLine();
+        String name = scanner.nextLine();
         System.out.println("Please Enter Health: ");
-        int health = getValidIntegerInput(scn, 0, 100);
+        int health = getValidIntegerInput(scanner, 0, 100);
         System.out.println("Please Enter Attack: ");
-        int attack = getValidIntegerInput(scn, 0, 100);
+        int attack = getValidIntegerInput(scanner, 0, 100);
         System.out.println("Please Enter Strength: ");
-        int strength = getValidIntegerInput(scn, 0, 100);
+        int strength = getValidIntegerInput(scanner, 0, 100);
         return new Player(name, health, attack, strength);
     }
 
-    public void startMatch(Arena arena) {
+    public void startTournament(Arena arena) {
         Player player1 = null, player2 = null;
         Scanner scanner = new Scanner(System.in);
         String userInput = "y";
         do {
-            System.out.println("Below players are part of the tournament\n");
-            arena.displayPlayers();
-            System.out.println("\nChoose 2 players to start the battle out of the below players");
+            System.out.println("Below players are still part of the tournament\n");
+            arena.displayAlivePlayers();
 
+            System.out.println("\nChoose 2 players to start the battle out of the below players");
             System.out.println("\nEnter Player 1 number: ");
             int playerOneIdx = scanner.nextInt();
-            System.out.println("\nEnter Player 2 number: ");
-            int playerTwoidx = scanner.nextInt();
             player1 = arena.getPlayer(playerOneIdx);
-            player2 = arena.getPlayer(playerTwoidx);
-
-            if(player1 == null || player2 == null || player1.isAlive() || player2.isAlive()) {
-                System.out.println("Wrong players selected, choose alive correct players");
+            if(player1 == null || !player1.isAlive()) {
+                System.out.println("\nPlayer 1 not present or already eliminated");
                 continue;
             }
 
-            battle(player1, player2);
+            System.out.println("\nEnter Player 2 number: ");
+            int playerTwoIdx = scanner.nextInt();
+            player2 = arena.getPlayer(playerTwoIdx);
+            if(player2 == null || !player2.isAlive()) {
+                System.out.println("\nPlayer 2 not present or already eliminated");
+                continue;
+            }
 
-            if(arena.getTotalNumberOfAlivePlayers() < 1)
+            Player winner = battle(player1, player2);
+
+            if(arena.getTotalNumberOfAlivePlayers() < 2) {
+                arena.setWinner(winner);
                 break;
+            }
 
-            System.out.println("Do you want to start another match? (Y/N): ");
+            System.out.println("\nDo you want to start another match? (Y/N): ");
             userInput = scanner.nextLine();
         } while(userInput.equalsIgnoreCase("y"));
     }
 
-    private void battle(Player player1, Player player2) {
+    private Player battle(Player player1, Player player2) {
         Player currentAttacker = player1.getHealth() > player2.getHealth() ? player2 : player1;
         Player defender = currentAttacker == player1 ? player2 : player1;
 
@@ -92,10 +103,16 @@ public class GameImpl implements GameInterface {
         }
 
         if(player1.isAlive()) {
-            System.out.println("Player 1 wins");
+            System.out.println("\nPlayer 1 wins");
+            return player1;
         } else {
-            System.out.println("Player 2 winds");
+            System.out.println("\nPlayer 2 wins");
+            return player2;
         }
+    }
+
+    public void getWinner(Arena arena) {
+        System.out.printf("\nWinner of the tournament is: %s", arena.getWinner().getName());
     }
 
     private int getValidIntegerInput(Scanner scanner, int min, int max){
