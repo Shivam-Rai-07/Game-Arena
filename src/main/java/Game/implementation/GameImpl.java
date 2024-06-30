@@ -5,14 +5,19 @@ import Game.Arena.Player;
 import Game.interfaces.GameInterface;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class GameImpl implements GameInterface {
     public void organizeGame() {
-        GameImpl game = new GameImpl();
-        Arena arena = game.createArena();
-        game.addPlayers(arena);
-        game.startTournament(arena);
-        game.getWinner(arena);
+        try {
+            GameImpl game = new GameImpl();
+            Arena arena = game.createArena();
+            game.addPlayers(arena);
+            game.startTournament(arena);
+            game.getWinner(arena);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Arena createArena() {
@@ -55,12 +60,13 @@ public class GameImpl implements GameInterface {
         Scanner scanner = new Scanner(System.in);
         String userInput = "y";
         do {
-            System.out.println("Below players are still part of the tournament\n");
+            System.out.println("\nBelow players are still part of the tournament");
             arena.displayAlivePlayers();
 
             System.out.println("\nChoose 2 players to start the battle out of the below players");
             System.out.println("\nEnter Player 1 number: ");
             int playerOneIdx = scanner.nextInt();
+            scanner.nextLine();
             player1 = arena.getPlayer(playerOneIdx);
             if(player1 == null || !player1.isAlive()) {
                 System.out.println("\nPlayer 1 not present or already eliminated");
@@ -69,6 +75,7 @@ public class GameImpl implements GameInterface {
 
             System.out.println("\nEnter Player 2 number: ");
             int playerTwoIdx = scanner.nextInt();
+            scanner.nextLine();
             player2 = arena.getPlayer(playerTwoIdx);
             if(player2 == null || !player2.isAlive()) {
                 System.out.println("\nPlayer 2 not present or already eliminated");
@@ -99,7 +106,10 @@ public class GameImpl implements GameInterface {
             System.out.println(currentAttacker.getName() + " attacks " + defender.getName() +
                     " with damage " + attackValue + ", defended " + defenceValue +
                     ", " + defender.getName() + "'s health now " + defender.getHealth());
+
+            Player temp = currentAttacker;
             currentAttacker = defender;
+            defender = temp;
         }
 
         if(player1.isAlive()) {
@@ -112,7 +122,11 @@ public class GameImpl implements GameInterface {
     }
 
     public void getWinner(Arena arena) {
-        System.out.printf("\nWinner of the tournament is: %s", arena.getWinner().getName());
+        Player winner = arena.getWinner();
+        if(winner != null)
+            System.out.printf("\nWinner of the tournament is: %s", arena.getWinner().getName());
+        else
+            System.out.printf("\nTournament not completed, therefore no winner");
     }
 
     private int getValidIntegerInput(Scanner scanner, int min, int max){

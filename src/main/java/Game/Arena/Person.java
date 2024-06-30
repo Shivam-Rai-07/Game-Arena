@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Person {
     private final String name;
 
-    Person(String name){
+    public Person(String name){
         this.name = name;
     }
 
