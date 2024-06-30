@@ -1,8 +1,6 @@
-package Game;
+package Game.Arena;
 
-import java.util.Random;
-
-import static Utility.RollDice.rollDice;
+import static Game.Utility.RollDice.rollDice;
 
 public class Player extends Person {
     private int health;
@@ -15,16 +13,24 @@ public class Player extends Person {
         this.strength = strength;
     }
 
-    int getHealth() {
+    public int getHealth() {
         return this.health;
     }
 
-    int attack() {
+    public int attack() {
         return this.attack*rollDice();
     }
 
-    int defend() {
+    public int defend() {
         return this.strength*rollDice();
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+
+        if (health < 0) {
+            health = 0;
+        }
     }
 
     boolean isAlive() {

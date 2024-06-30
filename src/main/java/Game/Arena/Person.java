@@ -1,4 +1,4 @@
-package Game;
+package Game.Arena;
 
 import java.util.UUID;
 
