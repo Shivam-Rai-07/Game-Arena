@@ -33,12 +33,16 @@ To play the Magical Arena game on your local machine, follow these steps:
     Extract the Zip File
 ```
 
-```bash
+```
     cd src/main/java
 ```
 
-```bash
-    Run the Main.java File 
+```
+    javac Main.java 
+```
+
+```
+    java Main 
 ```
 
 For Running Test Cases
