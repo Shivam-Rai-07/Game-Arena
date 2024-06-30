@@ -39,7 +39,6 @@ public class GameImpl implements GameInterface {
         }
     }
 
-
     public Player createPlayer() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please Enter Name: ");
