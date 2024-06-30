@@ -3,9 +3,7 @@ package Game.implementation;
 import Game.Arena.Arena;
 import Game.Arena.Player;
 import Game.interfaces.GameInterface;
-
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class GameImpl implements GameInterface {
     public void organizeGame() {

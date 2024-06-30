@@ -1,7 +1,5 @@
 package Game.Arena;
 
-import java.util.UUID;
-
 public class Person {
     private final String name;
 
