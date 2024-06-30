@@ -6,7 +6,8 @@ public class Player extends Person {
     private int health;
     private final int strength;
     private final int attack;
-    Player(String name, int health, int attack, int strength) {
+
+    public Player(String name, int health, int attack, int strength) {
         super(name);
         this.health = health;
         this.attack = attack;
@@ -16,6 +17,7 @@ public class Player extends Person {
     public int getHealth() {
         return this.health;
     }
+
 
     public int attack() {
         return this.attack*rollDice();
@@ -33,7 +35,7 @@ public class Player extends Person {
         }
     }
 
-    boolean isAlive() {
+    public boolean isAlive() {
         return this.health > 0;
     }
 }

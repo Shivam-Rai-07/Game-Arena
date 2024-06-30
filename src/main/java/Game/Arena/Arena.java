@@ -13,14 +13,38 @@ public class Arena {
     }
 
     public void addPlayer(Player player) {
-        players.add(player);
+        this.players.add(player);
+    }
+
+    public Player getPlayer(int num) {
+        if (num < 1 || num > this.players.size())
+            return null;
+        return this.players.get(num-1);
+    }
+
+    public void displayPlayers() {
+        for(int i=0; i<this.players.size(); i++)
+            System.out.printf("Player %d: , Name: %s, Health: %d\n", i+1, players.get(i).getName(), players.get(i).getHealth());
+    }
+
+    public int getNumberOfPlayers() {
+        return this.players.size();
+    }
+
+    public int getTotalNumberOfAlivePlayers() {
+        int alivePlayersCount = 0;
+        for(Player player: players) {
+            if (player.isAlive())
+                alivePlayersCount++;
+        }
+        return alivePlayersCount;
     }
 
     public Player getWinner() {
-        return winner;
+        return this.winner;
     }
 
     public void setWinner(Player player) {
-        winner = player;
+        this.winner = player;
     }
 }
