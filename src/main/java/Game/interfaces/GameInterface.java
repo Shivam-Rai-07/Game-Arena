@@ -6,5 +6,4 @@ public interface GameInterface {
 
     void organizeGame();
     Arena createArena();
-//    void startMatch();
 }
